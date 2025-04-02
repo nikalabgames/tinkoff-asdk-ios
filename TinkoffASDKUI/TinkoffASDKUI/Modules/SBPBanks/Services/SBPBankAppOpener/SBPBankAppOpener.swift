@@ -33,6 +33,6 @@ final class SBPBankAppOpener: ISBPBankAppOpener {
 
         guard let resultUrl = components?.url else { return completion(false) }
 
-        application.open(resultUrl, options: [:], completionHandler: completion)
+        application.open(resultUrl, completionHandler: completion)
     }
 }
