@@ -10,13 +10,30 @@ import UIKit
 protocol IUIApplication {
     func canOpenURL(_ url: URL) -> Bool
 
-    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any], completionHandler completion: ((Bool) -> Void)?)
+    func open(
+        _ url: URL,
+        optionList: [UIApplication.OpenExternalURLOptionsKey: Any],
+        completionHandler completion: (@MainActor @Sendable (Bool) -> Void)?
+    )
 }
 
 extension IUIApplication {
-    func open(_ url: URL, options: [UIApplication.OpenExternalURLOptionsKey: Any] = [:], completionHandler completion: ((Bool) -> Void)?) {
-        open(url, options: options, completionHandler: completion)
+    func open(
+        _ url: URL,
+        completionHandler completion: (@MainActor @Sendable (Bool) -> Void)?
+    ) {
+        open(url, optionList: [:], completionHandler: completion)
     }
 }
 
-extension UIApplication: IUIApplication {}
+extension UIApplication: IUIApplication {
+
+    func open(
+        _ url: URL,
+        optionList: [OpenExternalURLOptionsKey: Any],
+        completionHandler completion: (@MainActor @Sendable (Bool) -> Void)?
+    ) {
+        open(url, options: optionList, completionHandler: completion)
+    }
+}
+
